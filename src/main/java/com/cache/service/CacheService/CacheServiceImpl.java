@@ -31,7 +31,7 @@ public class CacheServiceImpl {
     
     @Autowired
     CacheServiceExceptionHandler cacheServiceExceptionHandler;
-    private long accessTime = 0; // For tracking access times to simulate LRU eviction
+    private long timeAccess = 0;
 
     private Logger LOGGER = LoggerFactory.getLogger(CacheServiceImpl.class);
 
@@ -119,26 +119,26 @@ public class CacheServiceImpl {
     }
     
     public synchronized void evictIfNeeded() {
-        String lruKey = null;
+        String key = null;
         long oldestTime = Long.MAX_VALUE; //this holds the maximum value a Long can hold 9223372036854775807
 
-        for (Map.Entry<String, Long> entry : myConfigValues.getAccessQueue().entrySet()) {
-            if (entry.getValue() < oldestTime) {
-                oldestTime = entry.getValue(); 
-                lruKey = entry.getKey();
+        for (Map.Entry<String, Long> entry : myConfigValues.getAccessQueue().entrySet()) { 
+        	if (entry.getValue() < oldestTime) {
+                oldestTime = entry.getValue();
+                key = entry.getKey();
             }
         }
 
-        if (lruKey != null) {
-        	myConfigValues.getInternalCache().remove(lruKey);
-        	myConfigValues.getAccessQueue().remove(lruKey);
-            LOGGER.info("Evicted the LRU entry: {}", lruKey);
+        if (key != null) {
+        	myConfigValues.getInternalCache().remove(key);
+        	myConfigValues.getAccessQueue().remove(key);
+            LOGGER.info("Evicted the LRU entry: {}", key);
         }
 }
 
 
 public synchronized void updateAccessQueue(String key) {
-    accessTime++; // Increment access time for every access
-    myConfigValues.getAccessQueue().put(key, accessTime);
+	timeAccess++;
+    myConfigValues.getAccessQueue().put(key, timeAccess);
 }
 }
