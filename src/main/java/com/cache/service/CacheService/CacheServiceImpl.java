@@ -122,10 +122,10 @@ public class CacheServiceImpl {
         String lruKey = null;
         long oldestTime = Long.MAX_VALUE; //this holds the maximum value a Long can hold 9223372036854775807
 
-        for (Map.Entry<String, Long> entry : myConfigValues.getAccessQueue().entrySet()) { //accessOrder.entrySet() [1=6, 2=2, 3=3, 4=4, 5=5, 6=7]
-            if (entry.getValue() < oldestTime) {  // 6<9223372036854775807  //2<6
-                oldestTime = entry.getValue();  //6th ki details enter hue //2
-                lruKey = entry.getKey(); //6 //2
+        for (Map.Entry<String, Long> entry : myConfigValues.getAccessQueue().entrySet()) {
+            if (entry.getValue() < oldestTime) {
+                oldestTime = entry.getValue(); 
+                lruKey = entry.getKey();
             }
         }
 
