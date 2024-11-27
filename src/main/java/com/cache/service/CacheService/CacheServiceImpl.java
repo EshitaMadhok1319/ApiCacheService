@@ -118,7 +118,7 @@ public class CacheServiceImpl {
         }
     }
     
-    public synchronized void evictIfNeeded() {
+    public void evictIfNeeded() {
         String key = null;
         long oldestTime = Long.MAX_VALUE; //this holds the maximum value a Long can hold 9223372036854775807
 
@@ -137,7 +137,7 @@ public class CacheServiceImpl {
 }
 
 
-public synchronized void updateAccessQueue(String key) {
+public void updateAccessQueue(String key) {
 	timeAccess++;
     myConfigValues.getAccessQueue().put(key, timeAccess);
 }
